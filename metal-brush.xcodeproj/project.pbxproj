@@ -13,6 +13,12 @@
 		F5742CFA2B85E533002AF2C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5742CF82B85E533002AF2C6 /* Main.storyboard */; };
 		F5742CFC2B85E534002AF2C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5742CFB2B85E534002AF2C6 /* Assets.xcassets */; };
 		F5742CFF2B85E534002AF2C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5742CFD2B85E534002AF2C6 /* LaunchScreen.storyboard */; };
+		F5742D0A2B85EEB7002AF2C6 /* shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = F5742D092B85EEB7002AF2C6 /* shaders.metal */; };
+		F5742D0C2B8C738D002AF2C6 /* FreeDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D0B2B8C738D002AF2C6 /* FreeDrawView.swift */; };
+		F5742D0E2B8C74BE002AF2C6 /* ViewStateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D0D2B8C74BE002AF2C6 /* ViewStateProtocol.swift */; };
+		F5742D102B8C7608002AF2C6 /* DrawingCurveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D0F2B8C7608002AF2C6 /* DrawingCurveState.swift */; };
+		F5742D122B8C7728002AF2C6 /* FreeDrawProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D112B8C7728002AF2C6 /* FreeDrawProtocol.swift */; };
+		F5742D182B8D6BD7002AF2C6 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +30,14 @@
 		F5742CFB2B85E534002AF2C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5742CFE2B85E534002AF2C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5742D002B85E534002AF2C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5742D092B85EEB7002AF2C6 /* shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = shaders.metal; sourceTree = "<group>"; };
+		F5742D0B2B8C738D002AF2C6 /* FreeDrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeDrawView.swift; sourceTree = "<group>"; };
+		F5742D0D2B8C74BE002AF2C6 /* ViewStateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStateProtocol.swift; sourceTree = "<group>"; };
+		F5742D0F2B8C7608002AF2C6 /* DrawingCurveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCurveState.swift; sourceTree = "<group>"; };
+		F5742D112B8C7728002AF2C6 /* FreeDrawProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeDrawProtocol.swift; sourceTree = "<group>"; };
+		F5742D142B8D64CE002AF2C6 /* FreeDrawShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FreeDrawShaderTypes.h; sourceTree = "<group>"; };
+		F5742D152B8D65A7002AF2C6 /* metal-brush-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "metal-brush-Bridging-Header.h"; sourceTree = "<group>"; };
+		F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +70,63 @@
 		F5742CF12B85E533002AF2C6 /* metal-brush */ = {
 			isa = PBXGroup;
 			children = (
-				F5742CF22B85E533002AF2C6 /* AppDelegate.swift */,
-				F5742CF42B85E533002AF2C6 /* SceneDelegate.swift */,
-				F5742CF62B85E533002AF2C6 /* ViewController.swift */,
-				F5742CF82B85E533002AF2C6 /* Main.storyboard */,
-				F5742CFB2B85E534002AF2C6 /* Assets.xcassets */,
-				F5742CFD2B85E534002AF2C6 /* LaunchScreen.storyboard */,
-				F5742D002B85E534002AF2C6 /* Info.plist */,
+				F5742D062B85ECE7002AF2C6 /* app */,
+				F5742D162B8D6BC1002AF2C6 /* extensions */,
+				F5742D132B8D6490002AF2C6 /* models */,
+				F5742D082B85EEA3002AF2C6 /* shaders */,
+				F5742D072B85ECED002AF2C6 /* views */,
 			);
 			path = "metal-brush";
+			sourceTree = "<group>";
+		};
+		F5742D062B85ECE7002AF2C6 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				F5742CF22B85E533002AF2C6 /* AppDelegate.swift */,
+				F5742CFB2B85E534002AF2C6 /* Assets.xcassets */,
+				F5742D002B85E534002AF2C6 /* Info.plist */,
+				F5742CFD2B85E534002AF2C6 /* LaunchScreen.storyboard */,
+				F5742CF82B85E533002AF2C6 /* Main.storyboard */,
+				F5742D152B8D65A7002AF2C6 /* metal-brush-Bridging-Header.h */,
+				F5742CF42B85E533002AF2C6 /* SceneDelegate.swift */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
+		F5742D072B85ECED002AF2C6 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				F5742D0F2B8C7608002AF2C6 /* DrawingCurveState.swift */,
+				F5742D112B8C7728002AF2C6 /* FreeDrawProtocol.swift */,
+				F5742D0B2B8C738D002AF2C6 /* FreeDrawView.swift */,
+				F5742CF62B85E533002AF2C6 /* ViewController.swift */,
+				F5742D0D2B8C74BE002AF2C6 /* ViewStateProtocol.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		F5742D082B85EEA3002AF2C6 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				F5742D142B8D64CE002AF2C6 /* FreeDrawShaderTypes.h */,
+				F5742D092B85EEB7002AF2C6 /* shaders.metal */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
+		F5742D132B8D6490002AF2C6 /* models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		F5742D162B8D6BC1002AF2C6 /* extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */,
+			);
+			path = extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,9 +200,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5742D0A2B85EEB7002AF2C6 /* shaders.metal in Sources */,
+				F5742D182B8D6BD7002AF2C6 /* Array+Extensions.swift in Sources */,
 				F5742CF72B85E533002AF2C6 /* ViewController.swift in Sources */,
+				F5742D0C2B8C738D002AF2C6 /* FreeDrawView.swift in Sources */,
+				F5742D122B8C7728002AF2C6 /* FreeDrawProtocol.swift in Sources */,
+				F5742D102B8C7608002AF2C6 /* DrawingCurveState.swift in Sources */,
 				F5742CF32B85E533002AF2C6 /* AppDelegate.swift in Sources */,
 				F5742CF52B85E533002AF2C6 /* SceneDelegate.swift in Sources */,
+				F5742D0E2B8C74BE002AF2C6 /* ViewStateProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,7 +362,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5K2F577Z6Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "metal-brush/Info.plist";
+				INFOPLIST_FILE = "metal-brush/app/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -308,6 +376,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "azun.demo.metal-brush";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "metal-brush/app/metal-brush-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -322,7 +391,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5K2F577Z6Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "metal-brush/Info.plist";
+				INFOPLIST_FILE = "metal-brush/app/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -336,6 +405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "azun.demo.metal-brush";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "metal-brush/app/metal-brush-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
