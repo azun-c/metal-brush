@@ -13,19 +13,13 @@
 typedef enum FreeDrawVertexInputIndex
 {
     FreeDrawVertexInputIndexVertices    = 0,
-    FreeDrawVertexInputIndexAspectRatio = 1,
+    FreeDrawVertexInputIndexDrawColor   = 1,
 } FreeDrawVertexInputIndex;
 
 typedef enum FreeDrawTextureInputIndex
 {
-    FreeDrawTextureInputIndexColor = 0,
+    FreeDrawTextureInputIndexColor = 0
 } FreeDrawTextureInputIndex;
-
-typedef struct
-{
-    vector_float2 position;
-    vector_float4 color;
-} FreeDrawSimpleVertex;
 
 typedef struct
 {

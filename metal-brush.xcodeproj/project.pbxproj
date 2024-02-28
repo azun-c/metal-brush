@@ -19,6 +19,20 @@
 		F5742D102B8C7608002AF2C6 /* DrawingCurveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D0F2B8C7608002AF2C6 /* DrawingCurveState.swift */; };
 		F5742D122B8C7728002AF2C6 /* FreeDrawProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D112B8C7728002AF2C6 /* FreeDrawProtocol.swift */; };
 		F5742D182B8D6BD7002AF2C6 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */; };
+		F5742D212B8D8E28002AF2C6 /* Triangles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5742D192B8D8E28002AF2C6 /* Triangles.cpp */; };
+		F5742D222B8D8E28002AF2C6 /* Polyline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5742D1B2B8D8E28002AF2C6 /* Polyline.cpp */; };
+		F5742D232B8D8E28002AF2C6 /* NonuniformSpline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F5742D1C2B8D8E28002AF2C6 /* NonuniformSpline.cpp */; };
+		F5742D252B8D9508002AF2C6 /* Scalar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D242B8D9508002AF2C6 /* Scalar+Extensions.swift */; };
+		F5742D312B8DD69C002AF2C6 /* FreeDrawPenGray-2_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D272B8DD69C002AF2C6 /* FreeDrawPenGray-2_32.png */; };
+		F5742D322B8DD69C002AF2C6 /* FreeDrawPenGray-2_4.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D282B8DD69C002AF2C6 /* FreeDrawPenGray-2_4.png */; };
+		F5742D332B8DD69C002AF2C6 /* FreeDrawPenGray_16.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D292B8DD69C002AF2C6 /* FreeDrawPenGray_16.png */; };
+		F5742D342B8DD69C002AF2C6 /* FreeDrawPenGray-2_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2A2B8DD69C002AF2C6 /* FreeDrawPenGray-2_2.png */; };
+		F5742D352B8DD69C002AF2C6 /* FreeDrawPenGray-2_16.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2B2B8DD69C002AF2C6 /* FreeDrawPenGray-2_16.png */; };
+		F5742D362B8DD69C002AF2C6 /* FreeDrawPenGray-2_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2C2B8DD69C002AF2C6 /* FreeDrawPenGray-2_1.png */; };
+		F5742D372B8DD69C002AF2C6 /* FreeDrawPenGray-2_8.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2D2B8DD69C002AF2C6 /* FreeDrawPenGray-2_8.png */; };
+		F5742D382B8DD69C002AF2C6 /* FreeDrawPenGray_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2E2B8DD69C002AF2C6 /* FreeDrawPenGray_32.png */; };
+		F5742D392B8DD69C002AF2C6 /* FreeDrawPenMono_16.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */; };
+		F5742D3A2B8DD69C002AF2C6 /* FreeDrawPenMono_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +52,25 @@
 		F5742D142B8D64CE002AF2C6 /* FreeDrawShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FreeDrawShaderTypes.h; sourceTree = "<group>"; };
 		F5742D152B8D65A7002AF2C6 /* metal-brush-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "metal-brush-Bridging-Header.h"; sourceTree = "<group>"; };
 		F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		F5742D192B8D8E28002AF2C6 /* Triangles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Triangles.cpp; sourceTree = "<group>"; };
+		F5742D1A2B8D8E28002AF2C6 /* Vertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vertex.hpp; sourceTree = "<group>"; };
+		F5742D1B2B8D8E28002AF2C6 /* Polyline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Polyline.cpp; sourceTree = "<group>"; };
+		F5742D1C2B8D8E28002AF2C6 /* NonuniformSpline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NonuniformSpline.cpp; sourceTree = "<group>"; };
+		F5742D1D2B8D8E28002AF2C6 /* NonuniformSpline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NonuniformSpline.hpp; sourceTree = "<group>"; };
+		F5742D1E2B8D8E28002AF2C6 /* Polyline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Polyline.hpp; sourceTree = "<group>"; };
+		F5742D1F2B8D8E28002AF2C6 /* Triangles.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Triangles.hpp; sourceTree = "<group>"; };
+		F5742D202B8D8E28002AF2C6 /* Vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Vector.hpp; sourceTree = "<group>"; };
+		F5742D242B8D9508002AF2C6 /* Scalar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Scalar+Extensions.swift"; sourceTree = "<group>"; };
+		F5742D272B8DD69C002AF2C6 /* FreeDrawPenGray-2_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_32.png"; sourceTree = "<group>"; };
+		F5742D282B8DD69C002AF2C6 /* FreeDrawPenGray-2_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_4.png"; sourceTree = "<group>"; };
+		F5742D292B8DD69C002AF2C6 /* FreeDrawPenGray_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenGray_16.png; sourceTree = "<group>"; };
+		F5742D2A2B8DD69C002AF2C6 /* FreeDrawPenGray-2_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_2.png"; sourceTree = "<group>"; };
+		F5742D2B2B8DD69C002AF2C6 /* FreeDrawPenGray-2_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_16.png"; sourceTree = "<group>"; };
+		F5742D2C2B8DD69C002AF2C6 /* FreeDrawPenGray-2_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_1.png"; sourceTree = "<group>"; };
+		F5742D2D2B8DD69C002AF2C6 /* FreeDrawPenGray-2_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FreeDrawPenGray-2_8.png"; sourceTree = "<group>"; };
+		F5742D2E2B8DD69C002AF2C6 /* FreeDrawPenGray_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenGray_32.png; sourceTree = "<group>"; };
+		F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_16.png; sourceTree = "<group>"; };
+		F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_32.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +107,7 @@
 				F5742D162B8D6BC1002AF2C6 /* extensions */,
 				F5742D132B8D6490002AF2C6 /* models */,
 				F5742D082B85EEA3002AF2C6 /* shaders */,
+				F5742D262B8DD671002AF2C6 /* textures */,
 				F5742D072B85ECED002AF2C6 /* views */,
 			);
 			path = "metal-brush";
@@ -117,6 +151,14 @@
 		F5742D132B8D6490002AF2C6 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				F5742D1C2B8D8E28002AF2C6 /* NonuniformSpline.cpp */,
+				F5742D1D2B8D8E28002AF2C6 /* NonuniformSpline.hpp */,
+				F5742D1B2B8D8E28002AF2C6 /* Polyline.cpp */,
+				F5742D1E2B8D8E28002AF2C6 /* Polyline.hpp */,
+				F5742D192B8D8E28002AF2C6 /* Triangles.cpp */,
+				F5742D1F2B8D8E28002AF2C6 /* Triangles.hpp */,
+				F5742D202B8D8E28002AF2C6 /* Vector.hpp */,
+				F5742D1A2B8D8E28002AF2C6 /* Vertex.hpp */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -125,8 +167,26 @@
 			isa = PBXGroup;
 			children = (
 				F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */,
+				F5742D242B8D9508002AF2C6 /* Scalar+Extensions.swift */,
 			);
 			path = extensions;
+			sourceTree = "<group>";
+		};
+		F5742D262B8DD671002AF2C6 /* textures */ = {
+			isa = PBXGroup;
+			children = (
+				F5742D292B8DD69C002AF2C6 /* FreeDrawPenGray_16.png */,
+				F5742D2E2B8DD69C002AF2C6 /* FreeDrawPenGray_32.png */,
+				F5742D2C2B8DD69C002AF2C6 /* FreeDrawPenGray-2_1.png */,
+				F5742D2A2B8DD69C002AF2C6 /* FreeDrawPenGray-2_2.png */,
+				F5742D282B8DD69C002AF2C6 /* FreeDrawPenGray-2_4.png */,
+				F5742D2D2B8DD69C002AF2C6 /* FreeDrawPenGray-2_8.png */,
+				F5742D2B2B8DD69C002AF2C6 /* FreeDrawPenGray-2_16.png */,
+				F5742D272B8DD69C002AF2C6 /* FreeDrawPenGray-2_32.png */,
+				F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */,
+				F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */,
+			);
+			path = textures;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,9 +247,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5742D312B8DD69C002AF2C6 /* FreeDrawPenGray-2_32.png in Resources */,
+				F5742D332B8DD69C002AF2C6 /* FreeDrawPenGray_16.png in Resources */,
 				F5742CFF2B85E534002AF2C6 /* LaunchScreen.storyboard in Resources */,
+				F5742D322B8DD69C002AF2C6 /* FreeDrawPenGray-2_4.png in Resources */,
+				F5742D342B8DD69C002AF2C6 /* FreeDrawPenGray-2_2.png in Resources */,
 				F5742CFC2B85E534002AF2C6 /* Assets.xcassets in Resources */,
+				F5742D3A2B8DD69C002AF2C6 /* FreeDrawPenMono_32.png in Resources */,
+				F5742D382B8DD69C002AF2C6 /* FreeDrawPenGray_32.png in Resources */,
+				F5742D352B8DD69C002AF2C6 /* FreeDrawPenGray-2_16.png in Resources */,
 				F5742CFA2B85E533002AF2C6 /* Main.storyboard in Resources */,
+				F5742D372B8DD69C002AF2C6 /* FreeDrawPenGray-2_8.png in Resources */,
+				F5742D362B8DD69C002AF2C6 /* FreeDrawPenGray-2_1.png in Resources */,
+				F5742D392B8DD69C002AF2C6 /* FreeDrawPenMono_16.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +271,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5742D0A2B85EEB7002AF2C6 /* shaders.metal in Sources */,
+				F5742D252B8D9508002AF2C6 /* Scalar+Extensions.swift in Sources */,
+				F5742D212B8D8E28002AF2C6 /* Triangles.cpp in Sources */,
 				F5742D182B8D6BD7002AF2C6 /* Array+Extensions.swift in Sources */,
 				F5742CF72B85E533002AF2C6 /* ViewController.swift in Sources */,
 				F5742D0C2B8C738D002AF2C6 /* FreeDrawView.swift in Sources */,
@@ -209,6 +281,8 @@
 				F5742CF32B85E533002AF2C6 /* AppDelegate.swift in Sources */,
 				F5742CF52B85E533002AF2C6 /* SceneDelegate.swift in Sources */,
 				F5742D0E2B8C74BE002AF2C6 /* ViewStateProtocol.swift in Sources */,
+				F5742D222B8D8E28002AF2C6 /* Polyline.cpp in Sources */,
+				F5742D232B8D8E28002AF2C6 /* NonuniformSpline.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +451,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "metal-brush/app/metal-brush-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -406,6 +481,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "metal-brush/app/metal-brush-Bridging-Header.h";
+				SWIFT_OBJC_INTEROP_MODE = objcxx;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

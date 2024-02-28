@@ -9,5 +9,8 @@
 #define metal_brush_Bridging_Header_h
 
 #import "FreeDrawShaderTypes.h"
+#import "Polyline.hpp"
+#import "Vector.hpp"
+#import "Triangles.hpp"
 
 #endif /* metal_brush_Bridging_Header_h */

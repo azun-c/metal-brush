@@ -15,7 +15,6 @@ class ViewController: UIViewController {
         
         let state = DrawingCurveState(for: freeDrawView)
         freeDrawView.viewState = state
-        state.onBeginState()
         return freeDrawView
     }()
     
@@ -27,7 +26,7 @@ class ViewController: UIViewController {
 
 private extension ViewController {
     func setupUI() {
-        view.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.9)
+        view.backgroundColor = .clear
         view.addSubview(freeDrawView)
         NSLayoutConstraint.activate([
             freeDrawView.topAnchor.constraint(equalTo: view.topAnchor),

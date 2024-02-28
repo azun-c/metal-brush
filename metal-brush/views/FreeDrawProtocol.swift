@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import UIKit
 
-protocol FreeDrawProtocol: AnyObject {
+protocol FreeDrawProtocol: UIView {
+    var curveWidth: Float { get set }
     var viewState: ViewStateProtocol? { get set }
+    var triangles: Triangles { get set }
 }
