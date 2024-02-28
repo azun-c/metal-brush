@@ -33,6 +33,7 @@
 		F5742D382B8DD69C002AF2C6 /* FreeDrawPenGray_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2E2B8DD69C002AF2C6 /* FreeDrawPenGray_32.png */; };
 		F5742D392B8DD69C002AF2C6 /* FreeDrawPenMono_16.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */; };
 		F5742D3A2B8DD69C002AF2C6 /* FreeDrawPenMono_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */; };
+		F5742D3C2B8EF2A8002AF2C6 /* Triangle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		F5742D2E2B8DD69C002AF2C6 /* FreeDrawPenGray_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenGray_32.png; sourceTree = "<group>"; };
 		F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_16.png; sourceTree = "<group>"; };
 		F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_32.png; sourceTree = "<group>"; };
+		F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Triangle+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 			children = (
 				F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */,
 				F5742D242B8D9508002AF2C6 /* Scalar+Extensions.swift */,
+				F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				F5742CF32B85E533002AF2C6 /* AppDelegate.swift in Sources */,
 				F5742CF52B85E533002AF2C6 /* SceneDelegate.swift in Sources */,
 				F5742D0E2B8C74BE002AF2C6 /* ViewStateProtocol.swift in Sources */,
+				F5742D3C2B8EF2A8002AF2C6 /* Triangle+Extensions.swift in Sources */,
 				F5742D222B8D8E28002AF2C6 /* Polyline.cpp in Sources */,
 				F5742D232B8D8E28002AF2C6 /* NonuniformSpline.cpp in Sources */,
 			);

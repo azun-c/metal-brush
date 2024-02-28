@@ -18,7 +18,7 @@ class FreeDrawView: MTKView {
     private lazy var commandQueue = device?.makeCommandQueue()
     private lazy var defaultLibrary = device?.makeDefaultLibrary()
     private lazy var drawingColor = SIMD4<Float>(1.0, 0.0, 1.0, 1.0)
-    private lazy var viewportSize: vector_uint2 = .zero
+    private lazy var viewportSize: SIMD2<Float> = .zero
     
     // Texture to render to
     private lazy var offscreenTexture = createOffscreenTexture()
@@ -70,8 +70,9 @@ extension FreeDrawView {
 extension FreeDrawView: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         // Save the size of the drawable to pass to the vertex shader.
-        viewportSize.x = size.width.asUInt32
-        viewportSize.y = size.height.asUInt32
+        let scale = UIScreen.main.scale
+        viewportSize.x = (size.width / scale).asFloat
+        viewportSize.y = (size.height / scale).asFloat
     }
     
     func draw(in view: MTKView) {
@@ -142,56 +143,23 @@ private extension FreeDrawView {
     
     func buildTriangleVertices() -> [FreeDrawTextureVertex] {
         guard triangles.m_triangles.count > 0 else { return [] }
-        return buildTriangleVerticesWithOpenGLSpacePosition()
+        
+        let triangleVerticesInViewportSpace = triangles.m_triangles.flatMap {
+            $0.toVertexArray()
+        }
+        // inspired by: https://stackoverflow.com/a/66519925
+        return triangleVerticesInViewportSpace.map {
+            .init(position: metalCoordinate(for: $0.position),
+                  texcoord: $0.texcoord)
+        }
     }
     
-    func buildTriangleVerticesWithOpenGLSpacePosition() -> [FreeDrawTextureVertex] {
-        let halfWidth = Float(viewportSize.x / 2)
-        let halfHeight = Float(viewportSize.y / 2)
-        let scale = simd_float1(UIScreen.main.scale)
-        
-        let triangleVerticesWithOpenGLSpace: [FreeDrawTextureVertex] = triangles.m_triangles.flatMap {
-            Array(arrayLiteral:
-                    FreeDrawTextureVertex(position: .init($0.p1.position.x, $0.p1.position.y),
-                                          texcoord: .init($0.p1.texPos.x, $0.p1.texPos.y)),
-                  FreeDrawTextureVertex(position: .init($0.p2.position.x, $0.p2.position.y),
-                                        texcoord: .init($0.p2.texPos.x, $0.p2.texPos.y)),
-                  FreeDrawTextureVertex(position: .init($0.p3.position.x, $0.p3.position.y),
-                                        texcoord: .init($0.p3.texPos.x, $0.p3.texPos.y))
-            )
-        }
-        
-        let triangleVerticesWithMetalPixelSpace = triangleVerticesWithOpenGLSpace.map {
-            let transformedX = $0.position.x * scale - halfWidth
-            let x = min(max(-halfWidth, transformedX), halfWidth)
-            
-            let transformedY = -($0.position.y) * scale + halfHeight
-            let y = min(max(-halfHeight, transformedY), halfHeight)
-            return FreeDrawTextureVertex(position: .init(x, y),
-                                         texcoord: .init($0.texcoord.x,
-                                                         $0.texcoord.y))
-        }
-        
-        let projection = simd_float4x4([
-            [1, 0, 0, 0],
-            [0, 1, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ])
-        
-        let modelView = simd_float4x4([
-            [1.0/halfWidth, 0, 0, 0],
-            [0, 1.0/halfHeight, 0, 0],
-            [0, 0, 1, 0],
-            [-1, 1, 0, 1]
-        ])
-        
-        let triangleVertices = triangleVerticesWithMetalPixelSpace.map {
-            let transformedVertex = projection * modelView * simd_float4($0.position.x, $0.position.y, 0, 0)
-            let vertex = simd_float2(transformedVertex.x, transformedVertex.y)
-            return FreeDrawTextureVertex(position: vertex, texcoord: $0.texcoord)
-        }
-        return triangleVertices
+    func metalCoordinate(for position: SIMD2<Float>) -> SIMD2<Float> {
+        let inverseViewSize: SIMD2<Float> = .init(1.0 / viewportSize.x, 
+                                                  1.0 / viewportSize.y)
+        let clipX = 2.0 * position.x * inverseViewSize.x - 1.0
+        let clipY = 2.0 * -position.y * inverseViewSize.y + 1.0
+        return .init(clipX, clipY)
     }
     
     func loadTexture(from name: String) -> MTLTexture? {
