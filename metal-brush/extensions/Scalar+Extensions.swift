@@ -13,6 +13,12 @@ extension UInt32 {
     }
 }
 
+extension Int {
+    var asFloat: Float {
+        Float(self)
+    }
+}
+
 extension CGFloat {
     var asFloat: Float {
         Float(self)

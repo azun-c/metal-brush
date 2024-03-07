@@ -14,84 +14,82 @@ using namespace metal;
 #pragma mark - Shaders for simple pipeline used to render triangle to renderable texture
 
 // Vertex shader outputs and fragment shader inputs for simple pipeline
-struct NormalRasterizerData
+struct RasterizerData
 {
     float4 position [[position]];
     float2 texcoord;
+    float4 drawColor;
 };
 
 // Vertex shader which passes position and color through to rasterizer.
-vertex NormalRasterizerData
-normalVertex(const uint vertexID [[ vertex_id ]],
-             const device FreeDrawTextureVertex *vertices [[ buffer(FreeDrawVertexInputIndexVertices) ]])
+vertex RasterizerData
+whiteAsAlphaVertex(const uint vertexID [[ vertex_id ]],
+                   const device FreeDrawTextureVertex *vertices [[ buffer(FreeDrawVertexInputIndexVertices) ]],
+                   constant float4 &drawColor [[ buffer(FreeDrawVertexInputIndexDrawColor) ]])
 {
-    NormalRasterizerData out;
-
+    RasterizerData out;
+    
     out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
     out.position.xy = vertices[vertexID].position.xy;
-
+    
     out.texcoord = vertices[vertexID].texcoord;
-
+    out.drawColor = drawColor;
+    
     return out;
 }
 
 // Fragment shader that just outputs color passed from rasterizer.
 fragment float4 
-normalFragment(NormalRasterizerData in [[stage_in]],
-               texture2d<float> texture [[texture(FreeDrawTextureInputIndexColor)]])
+whiteAsAlphaFragment(RasterizerData in [[stage_in]],
+                     texture2d<float> texture [[texture(FreeDrawTextureInputIndexColor)]],
+                     sampler sampler2d [[sampler(0)]])
 {
-    sampler simpleSampler;
-
     // Sample data from the texture.
-    float4 colorSample = texture.sample(simpleSampler, in.texcoord);
-
-    // Return the color sample as the final color.
-    return colorSample;
+    float4 colorSample = texture.sample(sampler2d, in.texcoord);
+    
+    float alphaFactor = colorSample.r;
+    float4 finalColor = in.drawColor;
+    if (alphaFactor > 0.4) {
+        alphaFactor = 1;
+    }
+    else {
+        alphaFactor = 0;
+    }
+    finalColor.a = finalColor.a * alphaFactor; // alpha factor from Red component
+    
+    return finalColor;
 }
 
 #pragma mark -
 
 #pragma mark Shaders for pipeline used texture from renderable texture when rendering to the drawable.
 
-// Vertex shader outputs and fragment shader inputs for texturing pipeline.
-struct WhiteAsAlphaRasterizerData
-{
-    float4 position [[position]];
-    float2 texcoord;
-    float4 drawingColor;
-};
-
 // Vertex shader which adjusts positions by an aspect ratio and passes texture
 // coordinates through to the rasterizer.
-vertex WhiteAsAlphaRasterizerData
-whiteAsAlphaVertex(const uint vertexID [[ vertex_id ]],
-                   const device FreeDrawTextureVertex *vertices [[ buffer(FreeDrawVertexInputIndexVertices) ]],
-                   constant float4 &drawColor [[ buffer(FreeDrawVertexInputIndexDrawColor) ]])
+vertex RasterizerData
+normalVertex(const uint vertexID [[ vertex_id ]],
+             const device FreeDrawTextureVertex *vertices [[ buffer(FreeDrawVertexInputIndexVertices) ]])
 {
-    WhiteAsAlphaRasterizerData out;
-
+    RasterizerData out;
+    
     out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-
+    
     out.position.x = vertices[vertexID].position.x;
     out.position.y = vertices[vertexID].position.y;
-
+    
     out.texcoord = vertices[vertexID].texcoord;
-    out.drawingColor = drawColor;
-
+    
     return out;
 }
 // Fragment shader that samples a texture and outputs the sampled color.
 fragment float4
-whiteAsAlphaFragment(WhiteAsAlphaRasterizerData in [[stage_in]],
-                     texture2d<float> texture [[texture(FreeDrawTextureInputIndexColor)]])
+normalFragment(RasterizerData in [[stage_in]],
+               texture2d<float> texture [[texture(FreeDrawTextureInputIndexColor)]],
+               sampler sampler2d [[sampler(0)]])
 {
-    sampler simpleSampler;
-
     // Sample data from the texture.
-    float4 colorSample = texture.sample(simpleSampler, in.texcoord);
-
-    float alphaFactor = colorSample.r; // alpha factor from Red component
-    float4 finalColor = in.drawingColor;
-    finalColor.a = finalColor.a * alphaFactor;
-    return finalColor;
+    float4 colorSample = texture.sample(sampler2d, in.texcoord);
+    
+    // Return the color sample as the final color.
+    return colorSample;
 }

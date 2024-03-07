@@ -21,6 +21,11 @@ typedef enum FreeDrawTextureInputIndex
     FreeDrawTextureInputIndexColor = 0
 } FreeDrawTextureInputIndex;
 
+typedef enum FreeDrawSamplerInputIndex
+{
+    FreeDrawSamplerInputIndexSampler = 0
+} FreeDrawSamplerInputIndex;
+
 typedef struct
 {
     vector_float2 position;

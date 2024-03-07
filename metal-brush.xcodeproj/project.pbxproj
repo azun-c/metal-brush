@@ -34,6 +34,7 @@
 		F5742D392B8DD69C002AF2C6 /* FreeDrawPenMono_16.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */; };
 		F5742D3A2B8DD69C002AF2C6 /* FreeDrawPenMono_32.png in Resources */ = {isa = PBXBuildFile; fileRef = F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */; };
 		F5742D3C2B8EF2A8002AF2C6 /* Triangle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */; };
+		F5742D442B9005D0002AF2C6 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5742D432B9005D0002AF2C6 /* UIColor+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +74,7 @@
 		F5742D2F2B8DD69C002AF2C6 /* FreeDrawPenMono_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_16.png; sourceTree = "<group>"; };
 		F5742D302B8DD69C002AF2C6 /* FreeDrawPenMono_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreeDrawPenMono_32.png; sourceTree = "<group>"; };
 		F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Triangle+Extensions.swift"; sourceTree = "<group>"; };
+		F5742D432B9005D0002AF2C6 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 				F5742D172B8D6BD7002AF2C6 /* Array+Extensions.swift */,
 				F5742D242B8D9508002AF2C6 /* Scalar+Extensions.swift */,
 				F5742D3B2B8EF2A8002AF2C6 /* Triangle+Extensions.swift */,
+				F5742D432B9005D0002AF2C6 /* UIColor+Extensions.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5742D0A2B85EEB7002AF2C6 /* shaders.metal in Sources */,
+				F5742D442B9005D0002AF2C6 /* UIColor+Extensions.swift in Sources */,
 				F5742D252B8D9508002AF2C6 /* Scalar+Extensions.swift in Sources */,
 				F5742D212B8D8E28002AF2C6 /* Triangles.cpp in Sources */,
 				F5742D182B8D6BD7002AF2C6 /* Array+Extensions.swift in Sources */,
@@ -444,8 +448,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -474,8 +477,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 protocol FreeDrawProtocol: UIView {
-    var curveWidth: Float { get set }
+    var curveWidth: Float { get }
     var viewState: ViewStateProtocol? { get set }
     var triangles: Triangles { get set }
 }

@@ -30,11 +30,14 @@ extension DrawingCurveState: ViewStateProtocol {
     }
     
     func onRender() {
-        guard !currentPolyline.m_points.empty() else { return }
-        view?.triangles = generateTriangles()
+        prepareTriangles()
     }
     
     func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.count == 1 else {
+            currentPolyline.m_points.clear()
+            return
+        }
         guard let touch = touches.first, let view else { return }
         let point = touch.location(in: view)
         
@@ -45,6 +48,11 @@ extension DrawingCurveState: ViewStateProtocol {
     }
     
     func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.count == 1 else {
+            currentPolyline.m_points.clear()
+            return
+        }
+        
         guard let touch = touches.first, let view, let event else { return }
         let point = touch.location(in: view)
         
@@ -56,6 +64,11 @@ extension DrawingCurveState: ViewStateProtocol {
     }
     
     func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.count == 1 else {
+            currentPolyline.m_points.clear()
+            return
+        }
+        
         guard let touch = touches.first, let view else { return }
         let point = touch.location(in: view)
         
@@ -70,8 +83,8 @@ extension DrawingCurveState: ViewStateProtocol {
 private extension DrawingCurveState {
     func addAnExtraPointBeside(_ currentPoint: CGPoint) {
         // workaround: 1 point won't show on screen
-        currentPolyline.addPoint(vec2(currentPoint.x.asFloat + 0.003,
-                                      currentPoint.y.asFloat + 0.003))
+        currentPolyline.addPoint(vec2(currentPoint.x.asFloat + 0.1,
+                                      currentPoint.y.asFloat + 0.1))
     }
     
     func generateTriangles() -> Triangles {
@@ -83,5 +96,17 @@ private extension DrawingCurveState {
         InterpolateAsSNS(currentPolyline, &interpolated)
         PolylineToTriangles(interpolated, curveWidth, &tris)
         return tris
+    }
+    
+    func prepareTriangles() {
+        guard currentPolyline.m_points.isEmpty else {
+            view?.triangles = generateTriangles()
+            return
+        }
+        
+        let shouldReset = view?.triangles.m_triangles.isEmpty == false
+        if shouldReset {
+            view?.triangles = Triangles()
+        }
     }
 }

@@ -12,13 +12,12 @@ class FreeDrawView: MTKView {
     // FreeDrawProtocol
     var viewState: ViewStateProtocol?
     var triangles = Triangles()
-    var curveWidth: Float = 25
     
     private lazy var defaultOffscreenColor = MTLClearColorMake(0.0, 0.0, 0.0, 0.0)
     private lazy var commandQueue = device?.makeCommandQueue()
     private lazy var defaultLibrary = device?.makeDefaultLibrary()
-    private lazy var drawingColor = SIMD4<Float>(1.0, 0.0, 1.0, 1.0)
     private lazy var viewportSize: SIMD2<Float> = .zero
+    private var maxSampleCount: Int = 4
     
     // Texture to render to
     private lazy var offscreenTexture = createOffscreenTexture()
@@ -35,6 +34,8 @@ class FreeDrawView: MTKView {
     // A pipeline object to render to onscreen.
     private lazy var onscreenRenderPipeline = createOnscreenPipelineState()
     
+    private lazy var textureSamplerState = createSamplerState()
+    
     // A buffer for the rectangle, draw offscreen to onscreen
     private lazy var quadVertexBuffer = createOnscreenVertexBuffer()
     
@@ -42,8 +43,10 @@ class FreeDrawView: MTKView {
         super.init(frame: frame, device: MTLCreateSystemDefaultDevice())
         delegate = self
         isUserInteractionEnabled = true
-        clearColor = MTLClearColorMake(0 , 0, 0, 0)
+        clearColor = defaultOffscreenColor
         backgroundColor = .clear
+        autoResizeDrawable = true
+        sampleCount = maxSampleCount
     }
     
     required init(coder: NSCoder) {
@@ -70,9 +73,8 @@ extension FreeDrawView {
 extension FreeDrawView: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         // Save the size of the drawable to pass to the vertex shader.
-        let scale = UIScreen.main.scale
-        viewportSize.x = (size.width / scale).asFloat
-        viewportSize.y = (size.height / scale).asFloat
+        viewportSize.x = size.width.asFloat
+        viewportSize.y = size.height.asFloat
     }
     
     func draw(in view: MTKView) {
@@ -91,12 +93,36 @@ extension FreeDrawView: MTKViewDelegate {
 
 //MARK: - FreeDrawProtocol
 extension FreeDrawView: FreeDrawProtocol {
-    
+    var curveWidth: Float {
+        let seconds = Calendar.current.component(.second, from: Date())
+        return max(((seconds / 2) % 25).asFloat, 6)
+    }
 }
 
 //MARK: - Private
 private extension FreeDrawView {
+    var drawingColor: SIMD4<Float> {
+        // change color frequently
+        let seconds = Calendar.current.component(.second, from: Date()) % 20
+        if seconds > 15 {
+            return UIColor.systemRed.asSIMD4
+        }
+        
+        if seconds > 10 {
+            return UIColor.systemGreen.asSIMD4
+        }
+        
+        if seconds > 5 {
+            return .init(1, 1, 0.6, 1)
+        }
+        
+        return .init(0.6, 1, 0, 1)
+    }
+    
     func renderOffscreen(with commandBuffer: MTLCommandBuffer) {
+        let triangleVertices = buildTriangleVertices()
+        guard !triangleVertices.isEmpty else { return }
+        
         guard let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: offscreenRenderPassDescriptor),
               let offscreenRenderPipeline else { return }
         renderEncoder.label = "Offscreen Render Pass";
@@ -105,17 +131,21 @@ private extension FreeDrawView {
         // Set the penTexture as the source texture.
         renderEncoder.setFragmentTexture(penTexture, index: FreeDrawTextureInputIndexColor.rawValue.asInt)
         
-        let triangleVertices = buildTriangleVertices()
-        if !triangleVertices.isEmpty {
-            let triangleVertexBuffer = device?.makeBuffer(bytes: triangleVertices,
-                                                          length: triangleVertices.size(),
-                                                          options: .storageModeShared)
-            renderEncoder.setVertexBuffer(triangleVertexBuffer, offset: 0,
-                                          index: FreeDrawVertexInputIndexVertices.rawValue.asInt)
-            // Draw polygon (a set of triangles) with pen texture.
-            renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0,
-                                         vertexCount: triangleVertices.count)
-        }
+        // Set our sampler state so we can use it to sample the texture in the frag
+        renderEncoder.setFragmentSamplerState(textureSamplerState,
+                                              index: FreeDrawSamplerInputIndexSampler.rawValue.asInt)
+        
+        let triangleVertexBuffer = device?.makeBuffer(bytes: triangleVertices,
+                                                      length: triangleVertices.size(),
+                                                      options: .storageModeShared)
+        renderEncoder.setVertexBuffer(triangleVertexBuffer, offset: 0,
+                                      index: FreeDrawVertexInputIndexVertices.rawValue.asInt)
+        var color = drawingColor
+        renderEncoder.setVertexBytes(&color, length: MemoryLayout.size(ofValue: drawingColor),
+                                     index: FreeDrawVertexInputIndexDrawColor.rawValue.asInt)
+        // Draw polygon (a set of triangles) with pen texture.
+        renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0,
+                                     vertexCount: triangleVertices.count)
         
         renderEncoder.endEncoding()
     }
@@ -129,11 +159,13 @@ private extension FreeDrawView {
         
         // Set the offscreenTexture as the source texture.
         renderEncoder.setFragmentTexture(offscreenTexture, index: FreeDrawTextureInputIndexColor.rawValue.asInt)
+        
+        // Set our sampler state so we can use it to sample the texture in the frag
+        renderEncoder.setFragmentSamplerState(textureSamplerState,
+                                              index: FreeDrawSamplerInputIndexSampler.rawValue.asInt)
 
         renderEncoder.setVertexBuffer(quadVertexBuffer, offset: 0,
                                       index: FreeDrawVertexInputIndexVertices.rawValue.asInt)
-        renderEncoder.setVertexBytes(&drawingColor, length: MemoryLayout.size(ofValue: drawingColor),
-                                     index: FreeDrawVertexInputIndexDrawColor.rawValue.asInt)
 
         // Draw quad with rendered texture.
         renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
@@ -155,10 +187,13 @@ private extension FreeDrawView {
     }
     
     func metalCoordinate(for position: SIMD2<Float>) -> SIMD2<Float> {
-        let inverseViewSize: SIMD2<Float> = .init(1.0 / viewportSize.x, 
+        // Quote: To transform the position into Metal’s coordinates, the function needs the size of the viewport (in pixels) that the triangle is being drawn into ==> (position.x * scale, position.y * scale)
+        // Ref: https://developer.apple.com/documentation/metal/using_a_render_pipeline_to_render_primitives
+        let scale = contentScaleFactor.asFloat
+        let inverseViewSize: SIMD2<Float> = .init(1.0 / viewportSize.x,
                                                   1.0 / viewportSize.y)
-        let clipX = 2.0 * position.x * inverseViewSize.x - 1.0
-        let clipY = 2.0 * -position.y * inverseViewSize.y + 1.0
+        let clipX = 2.0 * position.x * scale * inverseViewSize.x - 1.0
+        let clipY = 2.0 * -position.y * scale * inverseViewSize.y + 1.0
         return .init(clipX, clipY)
     }
     
@@ -191,10 +226,11 @@ private extension FreeDrawView {
     }
     
     func createOffscreenTexture() -> MTLTexture? {
+        let scaleFactor = contentScaleFactor
         let texDescriptor = MTLTextureDescriptor()
         texDescriptor.textureType = .type2D
-        texDescriptor.width = UIScreen.main.bounds.width.asInt
-        texDescriptor.height = UIScreen.main.bounds.height.asInt
+        texDescriptor.width = (frame.size.width * scaleFactor).asInt
+        texDescriptor.height = (frame.size.height * scaleFactor).asInt
         texDescriptor.pixelFormat = .bgra8Unorm
         texDescriptor.usage = [.renderTarget, .shaderRead]
 
@@ -205,7 +241,7 @@ private extension FreeDrawView {
         let descriptor = MTLRenderPassDescriptor()
 
         descriptor.colorAttachments[0].texture = offscreenTexture;
-        descriptor.colorAttachments[0].loadAction = .load;
+        descriptor.colorAttachments[0].loadAction = .load
         descriptor.colorAttachments[0].clearColor = defaultOffscreenColor
         descriptor.colorAttachments[0].storeAction = .store
         return descriptor
@@ -214,8 +250,8 @@ private extension FreeDrawView {
     func createOffscreenPipelineState() -> MTLRenderPipelineState? {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.label = "Offscreen Render Pipeline"
-        descriptor.vertexFunction = defaultLibrary?.makeFunction(name: "normalVertex")
-        descriptor.fragmentFunction =  defaultLibrary?.makeFunction(name: "normalFragment")
+        descriptor.vertexFunction = defaultLibrary?.makeFunction(name: "whiteAsAlphaVertex")
+        descriptor.fragmentFunction =  defaultLibrary?.makeFunction(name: "whiteAsAlphaFragment")
         
         if let renderBufferAttachment = descriptor.colorAttachments[0] {
             renderBufferAttachment.pixelFormat = offscreenTexture?.pixelFormat ?? .bgra8Unorm
@@ -225,7 +261,7 @@ private extension FreeDrawView {
             renderBufferAttachment.sourceAlphaBlendFactor = .sourceAlpha
             renderBufferAttachment.destinationAlphaBlendFactor = .oneMinusSourceAlpha
             
-            renderBufferAttachment.rgbBlendOperation = .max
+            renderBufferAttachment.rgbBlendOperation = .add
             renderBufferAttachment.sourceRGBBlendFactor = .sourceAlpha
             renderBufferAttachment.destinationRGBBlendFactor = .oneMinusSourceAlpha
         }
@@ -237,8 +273,8 @@ private extension FreeDrawView {
     func createOnscreenPipelineState() -> MTLRenderPipelineState? {
         let descriptor = MTLRenderPipelineDescriptor()
         descriptor.label = "Onscreen Render Pipeline"
-        descriptor.vertexFunction = defaultLibrary?.makeFunction(name: "whiteAsAlphaVertex")
-        descriptor.fragmentFunction =  defaultLibrary?.makeFunction(name: "whiteAsAlphaFragment")
+        descriptor.vertexFunction = defaultLibrary?.makeFunction(name: "normalVertex")
+        descriptor.fragmentFunction =  defaultLibrary?.makeFunction(name: "normalFragment")
         if let renderBufferAttachment = descriptor.colorAttachments[0] {
             renderBufferAttachment.pixelFormat = self.colorPixelFormat
             renderBufferAttachment.isBlendingEnabled = true
@@ -251,6 +287,7 @@ private extension FreeDrawView {
             renderBufferAttachment.sourceRGBBlendFactor = .sourceAlpha
             renderBufferAttachment.destinationRGBBlendFactor = .oneMinusSourceAlpha
         }
+        descriptor.rasterSampleCount = maxSampleCount
         
         descriptor.vertexBuffers[FreeDrawVertexInputIndexVertices.rawValue.asInt].mutability = .immutable
         return try? device?.makeRenderPipelineState(descriptor: descriptor)
@@ -270,5 +307,14 @@ private extension FreeDrawView {
         return device?.makeBuffer(bytes: quadVertices,
                                   length: quadVertices.size(),
                                   options: .storageModeShared)
+    }
+    
+    func createSamplerState() -> MTLSamplerState? {
+        let samplerDescriptor = MTLSamplerDescriptor()
+        samplerDescriptor.sAddressMode = .clampToEdge
+        samplerDescriptor.tAddressMode = .clampToEdge
+        samplerDescriptor.minFilter = .linear
+        samplerDescriptor.magFilter = .linear
+        return device?.makeSamplerState(descriptor: samplerDescriptor)
     }
 }
