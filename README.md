@@ -60,30 +60,18 @@ A simple standalone Metal app for brush stroke
 
 - The idea is almost the same as OpenGL ES. Please refer [here](https://www.haroldserrano.com/blog/before-using-metal-computer-graphics-basics#the-rendering-pipeline) and [here](https://www.haroldserrano.com/blog/before-using-metal-computer-graphics-basics#the-rendering-pipeline)
 
-
-- Let's dive into a bit. Let's focus on the stages with items marked as red number inside red circle. 
-
 ### High level explanation of brush stroke app: 
 - Let's use the same example in the "Render Method" part above: The app already has a circle (in blue). Now, user taps at the center of the screen to draw another circle (in red). Let's review what happens behind the scence.
-- ![framebuffers-in-details](https://github.com/azun-c/opengles-brush/assets/114891397/06879065-af02-4f64-96c0-a6ea6087a5ce)
-- The app manages 2 Framebuffers(`m_offScreen` and `m_onScreen` - you may be confused because they're defined as different data types in source code, but don't mind)
-  - As explained a bit above about offscreen rendering. `m_offScreen` is responsible for drawing stuff, `m_onScreen` is for displaying to screen.
-- [Framebuffer objects are a collection of attachments.](https://www.khronos.org/opengl/wiki/Framebuffer_Object). In the app, each framebuffer contains only 1 attachment.
-  - m_offScreen's attachment is a texture buffer. (Just imagine this is just an image data buffer - containing all drawn items as a single combined image)
-  - m_onScreen's attachment is a [render buffer](https://www.khronos.org/opengl/wiki/Renderbuffer_Object). Renderbuffers are similar to Textures, however `they are optimized for use as render targets, while Textures may not be.`
-- Also [A framebuffer is a "render target", a place OpenGL can draw pixels to. It is not a texture, but instead it contains textures (one or several)](https://www.cse.chalmers.se/edu/course/TDA362/tutorials/lab5.html), again, Framebuffers contain attachments, those attachments can be textures, renderbuffers, and other kinds.
-  - So when executing any drawing commands, we need to target with a framebuffer (either `m_offScreen` or `m_onScreen`). When drawings happen, the attachments will get updated.
-- Based on that, let's focus on the m_offScreen's texture and m_onScreen's renderbuffer states during a drawing frame:
-  - (1) Before the new drawing happens, the m_offScreen's texture has the current state/image (which is the result of the previous drawing frame)
-    - Note: The yellow background color just to mark this is a buffer, not a physical screen)
-  - (2) Vertex Shader ([Normal.vert](https://github.com/azun-c/opengles-brush/blob/main/opengles-brush/shaders/Normal.vert)) determines the area of the new drawing
-  - (3) Fragment Shader ([Normal.frag](https://github.com/azun-c/opengles-brush/blob/main/opengles-brush/shaders/Normal.frag)) allocates color for every pixel, based on the sampler (pen's texture)
-  - (4) m_onScreen's Renderbuffer may have some previous drawings or blank (it doesn't matter, because the Renderbuffer will be filled soon)
-    - Note: The green background color just to mark this is a buffer, not a physical screen)
-  - (5) Vertex Shader ([Normal.vert](https://github.com/azun-c/opengles-brush/blob/main/opengles-brush/shaders/Normal.vert)) determines the area of the new drawing - the whole drawing surface
-  - (6) Fragment Shader ([WhiteAsAlpha.frag](https://github.com/azun-c/opengles-brush/blob/main/opengles-brush/shaders/WhiteAsAlpha.frag)) allocates color for every pixel, based on the sampler (m_offScreen's texture - (3)) plus the transformation:
-    - (White pixel -> target color pixel) & (Black pixel -> transparent pixel)
-    - The m_onScreen's Renderbuffer is bound to the presenting surface, so anything on m_onScreen's Renderbuffer will display on the physical screen.
-- [Program objects](https://www.khronos.org/opengl/wiki/GLSL_Object#Program_objects): are factors to execute every drawing commands. Each program should have the essential vertex shader and fragment shader. When drawing, the program will go through the `rendering pipeline` (as mentioned above). The app has 2 programs with the combinations of the 3 shaders: `Normal.vert`, `Normal.frag`, `WhiteAsAlpha.frag`.
-- [Blending](https://learnopengl.com/Advanced-OpenGL/Blending)
-  - This is an important technique to have the drawn items displayed as we want. If we don't use this, we won't able to render circles with rounded corner.
+- ![Metal-in-details](https://github.com/azun-c/metal-brush/assets/114891397/30669e7c-b11a-43b7-af1c-858133eb4546)
+- The process is similar to the OpenGL ES app, documented [here](https://github.com/azun-c/opengles-brush?tab=readme-ov-file#high-level-explanation-of-brush-stroke-app), with some adjustments:
+  - The framebuffers are replaced by [Render Command Encoder](https://developer.apple.com/documentation/metal/mtlrendercommandencoder)
+  - The programs are replaced by [Render Pipeline State](https://developer.apple.com/documentation/metal/mtlrenderpipelinestate)
+    - There is an enhancement: the pen texture sampling and alpha processing are combined into 1 single pipeline (`offscreenRenderPipeline`). The other pipeline just copies the composed texture to the render object for displaying.
+    - The fragement shader has an additional enhancement to reduce `halo`(dust) around the circle. (easier to see on devices)
+      - ![issue](https://github.com/azun-c/metal-brush/assets/114891397/003cbf2f-d974-40fc-b73d-06793137e949) -> ![fix](https://github.com/azun-c/metal-brush/assets/114891397/086e2584-9c2f-4974-b0a0-5b335dc3081d)
+
+### A bit more about Metal/MetalKit
+- Basic:
+  - [Using a Render Pipeline to Render Primitives](https://developer.apple.com/documentation/metal/using_a_render_pipeline_to_render_primitives)
+  - [Using Metal to Draw a View’s Contents](https://developer.apple.com/documentation/metal/using_metal_to_draw_a_view_s_contents)
+- More ebooks can be found in this [issue](https://cimtops.atlassian.net/browse/IRDPM-14556)
