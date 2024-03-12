@@ -75,3 +75,4 @@ A simple standalone Metal app for brush stroke
   - [Using a Render Pipeline to Render Primitives](https://developer.apple.com/documentation/metal/using_a_render_pipeline_to_render_primitives)
   - [Using Metal to Draw a View’s Contents](https://developer.apple.com/documentation/metal/using_metal_to_draw_a_view_s_contents)
 - More ebooks can be found in this [issue](https://cimtops.atlassian.net/browse/IRDPM-14556)
+- [Convert screen coordinates to Metal's Normalized Device Coordinates](https://stackoverflow.com/a/66519925)
