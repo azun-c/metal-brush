@@ -24,13 +24,11 @@ A simple standalone Metal app for brush stroke
   
   - Without the alpha component processing:
     
-    ![Metal-circle without](https://github.com/azun-c/metal-brush/assets/114891397/8e448ebe-0c67-48c2-8b4f-7f0f0910e804)
-
+    ![Metal-circle WITHOUT-](https://github.com/azun-c/metal-brush/assets/114891397/eaff7f40-ad0b-4717-b5c4-944b2200481b)
 
   - Final result(Wit the alpha component processing):
     
     ![Metal-circle with](https://github.com/azun-c/metal-brush/assets/114891397/37756cbc-2d06-47e1-8bf2-aa29985edb02)
-
 
 
 - And a curve line is just a series of `soft` dots that partially overlap when tapped and moved the finger on the screen.
@@ -39,7 +37,7 @@ A simple standalone Metal app for brush stroke
 
 - The app uses a rendering method called [Offerscreen rendering](https://microsoft.github.io/Win2D/WinUI3/html/Offscreen.htm#:~:text=Apps%20occasionally%20need%20to%20draw,%22drawing%20to%20a%20texture%22.)
 
-- Instead of rendering straight to the screen, it's storing the results in a texture. There are a couple of advantages of this method. Two on top advantages are:
+- Instead of rendering straight to the screen, it's storing the results in a texture. There are a couple of advantages of this method. Two biggest advantages are:
   - The app will later need to access(read) the rendering data for storing purpose. However, the screen buffer data is a WRITE only buffer. We can only write the data for displaying to it, but cannot read the rendered data
   - When displaying to screen, there should be some `heavy` tasks because it's related to display, screens, I/O, etc. In the meantime, if we render directly to screen (buffer), including the preprocessing pixels(calcuations, translations, color transformations, blending, etc.), will result in a bad experience or an intermittent failure.
 - So offscreen rendering manages a couple of offscreen buffers, all the computations are done and pixels are drawn on those buffers first, the final buffer holds the rendering data (which is similar to a texture, or an image). And the final step, we just need to write the exact pixels of the texture to the screen buffer. No more heavy tasks related to rendering pixels.
